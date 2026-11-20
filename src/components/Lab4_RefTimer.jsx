@@ -1,34 +1,52 @@
 import { useEffect, useRef, useState } from 'react';
+import { formatTime } from '../utils/formatTime.js';
 
 // LAB 4 (Slide 17): Timer ID를 useRef로 관리
 export default function Lab4RefTimer() {
   const [count, setCount] = useState(0);
   const [running, setRunning] = useState(false);
-  // TODO 1: 타이머 ID를 유지할 timerRef 생성 (초기값 null)
+  // 타이머 ID 저장용 Ref (값이 바뀌어도 리렌더링 X, 렌더링 사이에 유지됨)
+  const timerRef = useRef(null);
 
   const start = () => {
-    // TODO 2: timerRef.current에 타이머가 있으면 중복 시작 방지
-    // TODO 3: setInterval의 반환 ID를 timerRef.current에 보관
-    // TODO 4: 1초마다 count 증가, running을 true로 변경
+    // 이미 타이머가 있으면 중복 시작 방지
+    if (timerRef.current !== null) return;
+
+    timerRef.current = setInterval(() => {
+      setCount(prev => prev + 1);
+    }, 1000);
+    setRunning(true);
+    console.log('[LAB 4] start:', timerRef.current);
   };
 
   const stop = () => {
-    // TODO 5: clearInterval로 타이머 중지
-    // TODO 6: timerRef.current를 null로, running은 false로 변경
+    clearInterval(timerRef.current);
+    timerRef.current = null;
+    setRunning(false);
+    console.log('[LAB 4] stop');
   };
 
   const reset = () => {
-    // TODO 7: stop() 실행 후 count를 0으로 초기화
+    stop();
+    setCount(0);
   };
 
   useEffect(() => {
-    // TODO 8: 언마운트 시 Interval을 정리하는 Cleanup 작성
+    // 언마운트 시(다른 탭으로 이동) 남아 있는 Interval 정리
+    return () => {
+      if (timerRef.current !== null) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+        console.log('[LAB 4] cleanup: timer cleared on unmount');
+      }
+    };
   }, []);
 
   return (
     <div>
-      <p className="status">상태: {running ? 'Running' : 'Stopped'}</p>
+      <p className={running ? 'status running' : 'status'}>상태: {running ? 'Running' : 'Stopped'}</p>
       <div className="count">{count}</div>
+      <p className="time">{formatTime(count)}</p>
       <div className="controls">
         <button onClick={start} disabled={running}>Start</button>
         <button className="secondary" onClick={stop} disabled={!running}>Stop</button>
