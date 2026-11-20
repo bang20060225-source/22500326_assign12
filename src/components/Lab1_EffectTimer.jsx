@@ -6,11 +6,19 @@ export default function Lab1EffectTimer() {
   console.log('[LAB 1] rendered');
 
   useEffect(() => {
-    // TODO 1: 1초마다 setCount(prev => prev + 1)을 실행할 setInterval 작성
-    // TODO 2: 만든 타이머 ID를 보관
-    // TODO 3: return Cleanup 함수에서 clearInterval 호출
-    // TODO 4: Dependency Array가 []일 때와 생략했을 때의 차이 관찰
-  }, []);
+    console.log('[LAB 1] effect: timer start');
+
+    // 1초마다 이전 값(prev)을 기준으로 +1 (Functional State Update)
+    const timerId = setInterval(() => {
+      setCount(prev => prev + 1);
+    }, 1000);
+
+    // Cleanup: 언마운트될 때(다른 Lab 탭으로 이동) 타이머 정리
+    return () => {
+      clearInterval(timerId);
+      console.log('[LAB 1] cleanup: timer cleared');
+    };
+  }, []); // [] → 마운트 시 한 번만 타이머 생성
 
   return (
     <div>
