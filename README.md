@@ -4,7 +4,7 @@
 - 12주차 React Hooks 실습 프로젝트입니다.
 - 강의에서 제공한 Starter Project의 TODO를 완성해서 useEffect, useRef를 이용한 4개의 Lab을 구현했습니다.
 - Starter Project: https://github.com/2026-2-OSS/week12_starter_project
-- 사용 기술: React 19, Vite 6
+- 버셀 배포 주소: https://22500326-assign12.vercel.app/
 
 ## 2. Installation
 ```bash
@@ -128,7 +128,7 @@ useState는 값이 바뀌면 리렌더링되고, useRef는 `.current`를 바꿔�
 - 4개 Lab 정상 동작 확인, Browser Console 에러 없음 확인
 
 ## 7. Deployment
-- Vercel URL: https://여기에-배포-주소.vercel.app
+- Vercel URL: https://22500326-assign12.vercel.app/
 - GitHub에 Push하면 Vercel에서 자동으로 다시 배포되는 것 확인
 
 ## 8. Weekly Review
